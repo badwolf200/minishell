@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 17:50:04 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/05/06 16:02:05 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/05/21 17:07:20 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,11 @@ int	main(int argc, char **argv, char **env)
 		if (!line)
 			return (error_ret(NULL, env_list, saved_attributes, histo_list));
 		if (!ft_strcmp(line, "exit"))
-			return (success_ret(line, env_list, saved_attributes, histo_list));
-		if (pars_line (line, &env_list) == -1)
+			return (success_ret(ft_strdup(line), env_list, saved_attributes, histo_list));
+		if (pars_line (ft_strdup(line), &env_list) == -1)
 			return (error_ret(line, env_list, saved_attributes, histo_list));
 		// history_print_list(histo_list);
+		// env_print_list(env_list);
 	}
 	return (0);
 }

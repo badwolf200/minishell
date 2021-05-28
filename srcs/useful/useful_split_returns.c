@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 17:07:48 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/05/04 17:08:34 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/05/18 17:22:26 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,12 @@ int	free_split_ret_error(char **split)
 	int	i;
 
 	i = 0;
-	while (split[i])
-		free(split[i++]);
-	free(split);
+	if (split)
+	{
+		while (split[i])
+			free(split[i++]);
+		free(split);
+	}
 	return (-1);
 }
 

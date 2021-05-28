@@ -6,11 +6,13 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 17:49:48 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/05/07 16:31:53 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/05/27 18:04:40 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/* les quotes de début et de fin ne sont pas inside_quotes */
 
 bool	is_inside_quotes(char *line, int j)
 {

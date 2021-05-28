@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 17:15:35 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/05/12 15:21:17 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/05/21 19:54:03 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ char	*get_right_execve_path(char *cmd, char **paths)
 
 int	execute_cmd(char **cmd, char *path, t_env *env_list)
 {
-	pid_t	pid;
 	int		ret;
 	char	**env_tab;
 
@@ -57,18 +56,9 @@ int	execute_cmd(char **cmd, char *path, t_env *env_list)
 	env_tab = create_env_tab(env_list);
 	if (!env_tab)
 		return (-1);
-	pid = fork();
-	if (pid == -1)
-		ret = -1;
-	else if (!pid)
-		ret = execve(path, cmd, env_tab);
-	else
-	{
-		dprintf(3, "lol\n");
-		ret = 0;
-		wait(NULL);
-		dprintf(3, "yeet\n");
-	}
+	ret = execve(path, cmd, env_tab);
+	if (!ret)
+		errno = 0;
 	free_split(env_tab);
 	return (ret);
 }
@@ -89,7 +79,10 @@ int	cmd_execve(char **cmd, t_env *env_list)
 		return (-1);
 	errno = 0;
 	if (!right_path[0])
-		ret = error_ret_0("Wut ?");
+	{
+		ft_printf("Wut ?\n");
+		ret = 127;
+	}
 	else
 		ret = execute_cmd(cmd, right_path, env_list);
 	free(right_path);

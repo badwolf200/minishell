@@ -6,7 +6,7 @@
 #    By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/02 14:55:32 by rkowalsk          #+#    #+#              #
-#    Updated: 2021/05/12 14:37:05 by rkowalsk         ###   ########lyon.fr    #
+#    Updated: 2021/05/28 17:40:21 by rkowalsk         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,11 +24,14 @@ SRCS = \
 	srcs/commands/proceed_cmd.c \
 	srcs/commands/env_list_to_tab.c \
 	srcs/parsing/line_parsing.c \
-	srcs/parsing/semicolons.c \
-	srcs/parsing/pipes.c \
+	srcs/parsing/pars_semicolons.c \
+	srcs/parsing/pars_spaces.c \
+	srcs/parsing/pars_pipes.c \
+	srcs/parsing/fork.c \
 	srcs/parsing/variables.c \
-	srcs/parsing/pipe_stuff_together.c \
+	srcs/parsing/redirections.c \
 	srcs/parsing/get_line.c \
+	srcs/parsing/get_line2.c \
 	srcs/parsing/arrow_keys.c \
 	srcs/environment_list/env_list.c \
 	srcs/environment_list/env_list_2.c \

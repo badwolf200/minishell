@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 14:33:54 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/05/12 15:42:19 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/05/28 18:38:39 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,33 +42,51 @@ int	check_quotes(char *line)
 	return (0);
 }
 
-int	pars_spaces(char **command, t_env ** env_list)
+int	pars_spaces(char **command, t_env **env_list)
 {
 	int		i;
 	char	**line;
-	t_pipe	pip;
+	char	status;
+	int		save[2];
 
 	i = 0;
+	status = 0;
+	if (command[1])
+		save_fds(save);
 	while (command[i])
 	{
-		if (command[i + 1] && dprintf(1, "test0\n") && pipe_start(&pip) == -1)
-			return (-1);
-		line = ft_split(command[i], ' ');
+		if (command[i + 1])
+			status++;
+		line = split_spaces(command[i]);
 		if (!line)
 			return (-1);
-		if (proceed_cmd(line, env_list) < 0)
+		status = fork_execute(line, env_list, status);
+		if (status < 0 || status == 2)
 			return (-1);
-		if (!command[i + 1] && i > 0 && dprintf(1, "test1\n") && pipe_end(pip) == -1)
-			return (-1);
+		status = 0;
 		i++;
 	}
+	if (i > 1)
+		reset_fds(save);
 	return (0);
+}
+
+void	print_int_tab_tab(int **tab, char **command)
+{
+	int	i;
+	i = 0;
+	while (tab[i])
+	{
+		dprintf(1, "|%s| [%d] [%d]\n", command[i], tab[i][0], tab[i][1]);
+		i++;
+	}
 }
 
 int	pars_pipes(char **commands, t_env **env_list)
 {
 	int		ret;
 	int		i;
+	int		**fd_tab;
 	char	**command;
 
 	i = 0;
@@ -77,10 +95,12 @@ int	pars_pipes(char **commands, t_env **env_list)
 		ret = split_pipes(commands[i], &command);
 		if (ret == 0)
 			return (error_ret_0("Syntax error"));
-		else if (ret == -1)
+		if (ret == -1)
 			return (-1);
+		dprintf(1, "%d\n", redirection(command, &fd_tab));
+		print_int_tab_tab(fd_tab, command);
 		if (pars_spaces(command, env_list) < 0)
-			return (free_split_ret_error(commands));
+			return (free_split_ret_error(command));
 		free_split(command);
 		i++;
 	}
@@ -92,7 +112,6 @@ int	pars_line(char *line, t_env **env_list)
 	int		ret;
 	char	**commands;
 
-	line = ft_strdup(line);
 	if (!line)
 		return (-1);
 	if (check_quotes(line))

@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/23 11:38:25 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/05/12 14:36:38 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/05/28 17:39:46 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,5 +119,13 @@ int			split_pipes(char *line, char ***commands);
 int			is_str_empty(char *str);
 int			pipe_start(t_pipe *pip);
 int			pipe_end(t_pipe pip);
+char		**split_spaces(char *line);
+int			fork_execute(char **command, t_env **env_list, char status);
+void		reset_fds(int *save);
+void		save_fds(int *save);
+char		*delete_right(char *line, t_curs_pos *cursor);
+char		*delete_left(char *line, t_curs_pos *cursor);
+char		*add_char(char *line, int buffer, t_curs_pos *cursor);
+int			redirection(char **command, int ***fd_tab);
 
 #endif

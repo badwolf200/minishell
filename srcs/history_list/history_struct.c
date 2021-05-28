@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 16:36:44 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/05/03 16:59:26 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/05/21 16:15:21 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,14 +68,14 @@ void	history_print_list(t_history *list)
 	{
 		// ft_printf("1");
 		if (list->previous)
-			ft_printf("%s ", list->previous->line);
+			ft_printf("\"%s\" ", list->previous->line);
 		else
 			ft_printf("%p ", list->previous);
 		// ft_printf("2");
-		write(1, list->line, ft_strlen(list->line));
+		ft_printf("\"%s\"", list->line);
 		// ft_printf("3");
 		if (list->next)
-			ft_printf(" %s\n", list->next->line);
+			ft_printf(" \"%s\"\n", list->next->line);
 		else
 			ft_printf(" %p\n", list->next);
 		// ft_printf("4");

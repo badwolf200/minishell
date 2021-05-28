@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 17:50:41 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/05/07 17:24:00 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/05/21 15:51:30 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	proceed_cmd(char **cmd, t_env **env_list)
 	else if (!ft_strcmp(cmd[i], "echo"))
 		ret = cmd_echo(cmd + i);
 	else
-		cmd_execve(cmd + i, *env_list);
+		ret = cmd_execve(cmd + i, *env_list);
 	free_split(cmd);
 	return (ret);
 }

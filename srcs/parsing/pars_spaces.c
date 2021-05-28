@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 17:41:34 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/05/07 17:12:09 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/05/19 14:35:26 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	get_nb_spaces(char *line)
 	return (nb_args);
 }
 
-char	*dup_next_word(char *line, int *i)
+char	*dup_next_word(char *l, int *i)
 {
 	int		j;
 	int		i_save;
@@ -42,10 +42,9 @@ char	*dup_next_word(char *line, int *i)
 
 	j = 0;
 	i_save = *i;
-	while (line[*i] && (line[*i] != ' ' || is_inside_quotes(line, *i)))
+	while (l[*i] && (l[*i] != ' ' || is_inside_quotes(l, *i)))
 	{
-		if ((line[*i] != '\"' && line[*i] != '\'')
-			|| is_inside_quotes(line, *i))
+		if ((l[*i] != '\"' && l[*i] != '\'') || is_inside_quotes(l, *i))
 			j++;
 		(*i)++;
 	}
@@ -53,29 +52,31 @@ char	*dup_next_word(char *line, int *i)
 	if (!new)
 		return (NULL);
 	j = 0;
-	while (line[i_save] && (line[*i] != ' ' || is_inside_quotes(line, i_save)))
+	while (l[i_save] && (l[i_save] != ' ' || is_inside_quotes(l, i_save)))
 	{
-		if ((line[i_save] != '\"' && line[i_save] != '\'')
-			|| is_inside_quotes(line, i_save))
-			new[j++] = line[i_save];
-		i_save++;			
+		if ((l[i_save] != '\"' && l[i_save] != '\'')
+			|| is_inside_quotes(l, i_save))
+			new[j++] = l[i_save];
+		i_save++;
 	}
+	new[j] = '\0';
 	return (new);
 }
 
 char	**split_spaces(char *line)
 {
 	int		i;
+	int		nb_words;
 	char	**strs;
 	int		j;
 
-
-	strs = malloc(sizeof(char *) * (get_nb_spaces(line) + 1));
+	nb_words = get_nb_spaces(line);
+	strs = malloc(sizeof(char *) * (nb_words + 1));
 	if (!strs)
 		return (NULL);
 	i = 0;
 	j = 0;
-	while (line[i])
+	while (line[i] && j < nb_words)
 	{
 		while (line[i] == ' ')
 			i++;

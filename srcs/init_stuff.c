@@ -6,11 +6,29 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 17:26:59 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/04/28 17:31:54 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/05/21 15:21:25 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+t_env	*add_question_mark(t_env *tab)
+{
+	char	*name;
+	char	*value;
+
+	name = ft_strdup("?");
+	value = ft_strdup("0");
+	if (!name || !value)
+	{
+		free(name);
+		free(value);
+		env_free_list(tab);
+		return (NULL);
+	}
+	tab = env_add_link(name, value, false, tab);
+	return (tab);
+}
 
 t_env	*create_env_list(char **env_tab)
 {
@@ -33,7 +51,7 @@ t_env	*create_env_list(char **env_tab)
 		}
 		i++;
 	}
-	return (env_list);
+	return (add_question_mark(env_list));
 }
 
 void	set_input_mode(struct termios *saved_attributes)

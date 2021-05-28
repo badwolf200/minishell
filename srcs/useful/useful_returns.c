@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/29 14:40:53 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/05/05 18:10:15 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/05/21 18:23:59 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ int	error_ret(char *str, t_env *env, struct termios saved, t_history *histo)
 		env_free_list(env);
 	if (histo)
 		history_free_list(histo);
-	free(str);
+	else
+		free(str);
 	reset_input_mode(saved);
 	ft_printf("Error : %s\n", strerror(errno));
 	return (EXIT_FAILURE);
