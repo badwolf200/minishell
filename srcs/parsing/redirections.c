@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/25 17:12:28 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/05/28 19:10:40 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/05/28 19:29:20 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,9 +90,11 @@ int	goto_start_of_name(char *str, int i)
 void	open_fds_out(char *name, int nb_chevrons, int *fd_tab)
 {
 	if (nb_chevrons == 1)
-		fd_tab[1] = open(name, O_WRONLY | O_CREAT | O_TRUNC);
+		fd_tab[1] = open(name, O_WRONLY | O_CREAT | O_TRUNC,
+			S_IRWXU | S_IRGRP | S_IROTH);
 	else
-		fd_tab[1] = open(name, O_WRONLY | O_CREAT | O_APPEND);
+		fd_tab[1] = open(name, O_WRONLY | O_CREAT | O_APPEND,
+			S_IRWXU | S_IRGRP | S_IROTH);
 }
 
 int	open_out(char **command, int i, int *fd_tab)
@@ -102,8 +104,11 @@ int	open_out(char **command, int i, int *fd_tab)
 
 	nb_chevrons = 1;
 	command[0][i++] = '\0';
-	while (command[0][i++] == '>')
+	while (command[0][i] == '>')
+	{
+		i++;
 		nb_chevrons++;
+	}
 	if (nb_chevrons > 2)
 		return (0);
 	i = goto_start_of_name(command[0], i);
@@ -125,9 +130,11 @@ int	open_out(char **command, int i, int *fd_tab)
 void	open_fds_in(char *name, int nb_chevrons, int *fd_tab)
 {
 	if (nb_chevrons == 1)
-		fd_tab[0] = open(name, O_WRONLY | O_CREAT);
+		fd_tab[0] = open(name, O_WRONLY | O_CREAT,
+			S_IRWXU | S_IRGRP | S_IROTH);
 	else
-		fd_tab[0] = open(name, O_WRONLY | O_CREAT);
+		fd_tab[0] = open(name, O_WRONLY | O_CREAT,
+			S_IRWXU | S_IRGRP | S_IROTH);
 }
 
 int	open_in(char **command, int i, int *fd_tab)
@@ -137,8 +144,11 @@ int	open_in(char **command, int i, int *fd_tab)
 
 	nb_chevrons = 1;
 	command[0][i++] = '\0';
-	while (command[0][i++] == '<')
+	while (command[0][i] == '<')
+	{
+		i++;
 		nb_chevrons++;
+	}
 	if (nb_chevrons > 1)
 		return (0);
 	i = goto_start_of_name(command[0], i);
