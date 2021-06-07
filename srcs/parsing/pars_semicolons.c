@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   semicolons.c                                       :+:      :+:    :+:   */
+/*   pars_semicolons.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 14:24:11 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/05/10 13:16:37 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/07 18:19:48 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ int	check_double_semicolon(char *str)
 	i = 0;
 	while (str[i + 1])
 	{
-		if (str[i] == ';' && str[i + 1] == ';')
+		if (str[i] == ';' && str[i + 1] == ';'
+			&& !is_inside_quotes(str, i) && !is_escaped(str, i))
 			return (1);
 		i++;
 	}
@@ -44,20 +45,14 @@ int	get_nb_semicolons(char *line)
 {
 	int		i;
 	int		nb_semicolons;
-	bool	open_single;
-	bool	open_double;
+
 
 	i = 0;
 	nb_semicolons = 0;
-	open_double = false;
-	open_single = false;
 	while (line[i])
 	{
-		if (line[i] == '\'' && !open_double)
-			open_single = !open_single;
-		else if (line[i] == '\"' && !open_single)
-			open_double = !open_double;
-		else if (line[i] == ';')
+		if (line[i] == ';' && !is_inside_quotes(line, i)
+			&& !is_escaped(line, i))
 			nb_semicolons++;
 		i++;
 	}
@@ -75,7 +70,8 @@ char	**fill_split_semicolons(char *line, char **strs)
 	j = 0;
 	while (previous < (int)ft_strlen(line))
 	{
-		while ((line[i] && (line[i] != ';' || is_inside_quotes(line, i))))
+		while ((line[i] && (line[i] != ';'
+				|| is_inside_quotes(line, i) || is_escaped(line, i))))
 			i++;
 		strs[j] = ft_strndup(line + previous, i - previous);
 		if (!strs[j])
@@ -115,5 +111,5 @@ char	**split_semicolons(char *line)
 		}
 		i++;
 	}
-	return (strs);
+	return (remove_escape_from_split(strs, ';', ';'));
 }

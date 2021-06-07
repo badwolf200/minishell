@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cmd_env_pwd_echo_cd_setvar.c                       :+:      :+:    :+:   */
+/*   cmd_env_pwd_cd_setvar.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 17:17:12 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/05/06 17:35:21 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/04 17:40:14 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,26 +23,8 @@ int	cmd_cd(char **cmd)
 	if (errno == 2)
 	{
 		errno = 0;
-		write(1, "Where ?\n", ft_strlen("Where ?\n"));
+		write(1, "Where ?\n", 8);
 	}
-	return (0);
-}
-
-int	cmd_echo(char **cmd)
-{
-	int	i;
-
-	i = 1;
-	while (cmd[i] && !ft_strcmp(cmd[i], "-n"))
-		i++;
-	while (cmd[i])
-	{
-		if (i > 1 && ft_strcmp(cmd[i - 1], "-n"))
-			write(1, " ", 1);
-		ft_printf("%s", cmd[i++]);
-	}
-	if (!cmd[1] || ft_strcmp(cmd[1], "-n"))
-		write(1, "\n", 1);
 	return (0);
 }
 

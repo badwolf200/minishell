@@ -6,7 +6,7 @@
 #    By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/02 14:55:32 by rkowalsk          #+#    #+#              #
-#    Updated: 2021/05/28 17:40:21 by rkowalsk         ###   ########lyon.fr    #
+#    Updated: 2021/06/07 15:02:15 by rkowalsk         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,9 +16,11 @@ SRCS = \
 	srcs/minishell.c \
 	srcs/useful/useful.c \
 	srcs/useful/useful_returns.c \
+	srcs/useful/useful_escape_char.c \
 	srcs/useful/useful_split_returns.c \
 	srcs/init_stuff.c \
-	srcs/commands/cmd_env_pwd_echo_cd_setvar.c \
+	srcs/commands/cmd_echo.c \
+	srcs/commands/cmd_env_pwd_cd_setvar.c \
 	srcs/commands/cmd_export.c \
 	srcs/commands/execve.c \
 	srcs/commands/proceed_cmd.c \
@@ -30,6 +32,8 @@ SRCS = \
 	srcs/parsing/fork.c \
 	srcs/parsing/variables.c \
 	srcs/parsing/redirections.c \
+	srcs/parsing/redirections_dup_name.c \
+	srcs/parsing/redirections_open_inout.c \
 	srcs/parsing/get_line.c \
 	srcs/parsing/get_line2.c \
 	srcs/parsing/arrow_keys.c \

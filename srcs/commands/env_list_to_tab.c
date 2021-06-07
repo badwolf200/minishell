@@ -6,13 +6,13 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/14 16:55:10 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/05/05 14:27:31 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/01 19:06:59 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		get_list_size(t_env *list)
+int	get_list_size(t_env *list)
 {
 	int		i;
 

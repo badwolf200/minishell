@@ -6,41 +6,46 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 17:50:41 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/05/21 15:51:30 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/02 17:04:16 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	proceed_cmd(char **cmd, t_env **env_list)
+int	cmd_searching(char **cmd, t_env **env_list)
+{
+	int	ret;
+
+	if (!ft_strcmp(cmd[0], "env"))
+		ret = cmd_env(cmd, *env_list);
+	else if (!ft_strcmp(cmd[0], "export"))
+		ret = cmd_export(cmd, *env_list);
+	else if (!ft_strcmp(cmd[0], "unset"))
+		ret = cmd_unset(cmd, env_list);
+	else if (!ft_strcmp(cmd[0], "cd"))
+		ret = cmd_cd(cmd);
+	else if (!ft_strcmp(cmd[0], "pwd"))
+		ret = cmd_pwd(cmd);
+	else if (!ft_strcmp(cmd[0], "echo"))
+		ret = cmd_echo(cmd);
+	else
+		ret = cmd_execve(cmd, *env_list);
+	return (ret);
+}
+
+int	proceed_cmd(char **cmd, t_env **env_list, int *fd_tab)
 {
 	int		ret;
-	int		i;
+	int		save[2];
 
 	ret = 0;
-	i = 0;
-	while (cmd[i] && cmd[i][0] != '=' && ft_strchr(cmd[i], '='))
-	{
-		if (set_variable(cmd[i], env_list) == -1)
-			return (free_split_ret_error(cmd));
-		i++;
-	}
-	if (!cmd[i])
-		return (free_split(cmd));
-	else if (!ft_strcmp(cmd[i], "env"))
-		ret = cmd_env(cmd + i, *env_list);
-	else if (!ft_strcmp(cmd[i], "export"))
-		ret = cmd_export(cmd + i, *env_list);
-	else if (!ft_strcmp(cmd[i], "unset"))
-		ret = cmd_unset(cmd + i, env_list);
-	else if (!ft_strcmp(cmd[i], "cd"))
-		ret = cmd_cd(cmd + i);
-	else if (!ft_strcmp(cmd[i], "pwd"))
-		ret = cmd_pwd(cmd + i);
-	else if (!ft_strcmp(cmd[i], "echo"))
-		ret = cmd_echo(cmd + i);
-	else
-		ret = cmd_execve(cmd + i, *env_list);
-	free_split(cmd);
+	save_fds(save);
+	if (fd_tab[0] != 0)
+		dup2(fd_tab[0], 0);
+	if (fd_tab[1] != 1)
+		dup2(fd_tab[1], 1);
+	if (cmd[0])
+		ret = cmd_searching(cmd, env_list);
+	reset_fds(save);
 	return (ret);
 }

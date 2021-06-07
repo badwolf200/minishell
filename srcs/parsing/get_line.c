@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/19 17:42:28 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/05/21 20:02:59 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/04 15:47:22 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,19 +27,35 @@ char	*ret_exit(void)
 	return (ft_strdup("exit"));
 }
 
+char 	*read_buffer(int *buffer, char *line, t_curs_pos *curs)
+{
+	int	ret;
+
+	if (!line)
+		return (NULL);
+	*buffer = 0;
+	ret = read(0, buffer, 4);
+	if (ret < 0)
+		return (NULL);
+	if (g_sigint)
+	{
+		free(line);
+		line = ft_strdup("");
+		curs->line_pos = 0;
+		g_sigint = false;
+	}
+	return (line);
+}
+
 char	*read_loop(t_curs_pos curs, char *line, t_history **hist, int *buffer)
 {
 	t_history	*curr_hist;
-	int			ret;
 
 	curr_hist = *hist;
 	while (*buffer != '\n')
 	{
+		line = read_buffer(buffer, line, &curs);
 		if (!line)
-			return (NULL);
-		*buffer = 0;
-		ret = read(0, &*buffer, 4);
-		if (ret < 0)
 			return (NULL);
 		else if (*buffer == CTRL_D)
 			return (ret_exit());
@@ -53,6 +69,8 @@ char	*read_loop(t_curs_pos curs, char *line, t_history **hist, int *buffer)
 			line = add_char(line, *buffer, &curs);
 		(*hist)->line = line;
 	}
+	if (!ft_strcmp(line, "exit"))
+		return (ft_strdup("exit"));
 	return (line);
 }
 

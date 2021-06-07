@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 17:26:59 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/05/21 15:21:25 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/04 15:29:59 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	set_input_mode(struct termios *saved_attributes)
 
 	tcgetattr(0, saved_attributes);
 	tcgetattr(0, &new);
-	new.c_lflag &= ~(ICANON|ECHO);
+	new.c_lflag &= ~(ICANON | ECHO);
 	new.c_cc[VMIN] = 1;
 	new.c_cc[VTIME] = 0;
 	tcsetattr (0, TCSAFLUSH, &new);
@@ -74,7 +74,7 @@ int	init_termcaps(void)
 	term = getenv("TERM");
 	if (!term)
 	{
-		ft_printf(ANSI_COLOR_RED "Variable TERM non initialisée\n" 
+		ft_printf(ANSI_COLOR_RED "Variable TERM non initialisée\n"
 			ANSI_COLOR_RESET);
 		return (-1);
 	}
@@ -89,32 +89,3 @@ int	init_termcaps(void)
 			ANSI_COLOR_RESET);
 	return (-1);
 }
-
-// void	init_keys(t_key_set *keys)
-// {
-// 	keys->arrow_up[0] = 27;
-// 	keys->arrow_up[1] = 91;
-// 	keys->arrow_up[2] = 65;
-// 	keys->arrow_up[3] = 0;
-// 	keys->arrow_down[0] = 27;
-// 	keys->arrow_down[1] = 91;
-// 	keys->arrow_down[2] = 66;
-// 	keys->arrow_down[3] = 0;
-// 	keys->arrow_left[0] = 27;
-// 	keys->arrow_left[1] = 91;
-// 	keys->arrow_left[2] = 68;
-// 	keys->arrow_left[3] = 0;
-// 	keys->arrow_right[0] = 27;
-// 	keys->arrow_right[1] = 91;
-// 	keys->arrow_right[2] = 67;
-// 	keys->arrow_right[3] = 0;
-// 	keys->end[0] = 27;
-// 	keys->end[1] = 91;
-// 	keys->end[2] = 70;
-// 	keys->end[3] = 0;
-// 	keys->delete[0] = 27;
-// 	keys->delete[1] = 97;
-// 	keys->delete[2] = 51;
-// 	keys->delete[3] = 126;
-// 	keys->delete[4] = 0;
-// }

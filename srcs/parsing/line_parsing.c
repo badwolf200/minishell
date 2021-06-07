@@ -6,19 +6,11 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 14:33:54 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/05/28 18:38:39 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/07 18:33:36 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	free_ret_error(char *line, char *error, int	ret)
-{
-	if (error)
-		ft_printf("%s\n", error);
-	free(line);
-	return (ret);
-}
 
 int	check_quotes(char *line)
 {
@@ -32,8 +24,13 @@ int	check_quotes(char *line)
 	while (line[i])
 	{
 		if (line[i] == '\'' && !double_open)
-			single_open = !single_open;
-		else if (line[i] == '\"' && !single_open)
+		{
+			if (single_open)
+				single_open = false;
+			else if (!is_escaped(line, i))
+				single_open = true;
+		}
+		else if (line[i] == '\"' && !single_open && !is_escaped(line, i))
 			double_open = !double_open;
 		i++;
 	}
@@ -42,44 +39,39 @@ int	check_quotes(char *line)
 	return (0);
 }
 
-int	pars_spaces(char **command, t_env **env_list)
+int	reset_fds_ret_error(int *save, int i)
+{
+	if (i > 1)
+		reset_fds(save);
+	return (-1);
+}
+
+int	pars_spaces(char **command, t_env **env_list, int **fd_tab)
 {
 	int		i;
 	char	**line;
-	char	status;
+	int		status;
 	int		save[2];
 
 	i = 0;
-	status = 0;
 	if (command[1])
 		save_fds(save);
 	while (command[i])
 	{
-		if (command[i + 1])
-			status++;
+		status = (command[i + 1] != NULL);
+		if (i > 0)
+			status += 2;
 		line = split_spaces(command[i]);
 		if (!line)
-			return (-1);
-		status = fork_execute(line, env_list, status);
-		if (status < 0 || status == 2)
-			return (-1);
-		status = 0;
+			return (reset_fds_ret_error(save, i));
+		status = var_then_fork(line, env_list, status, fd_tab[i]);
+		if (status < 0)
+			return (reset_fds_ret_error(save, i));
 		i++;
 	}
 	if (i > 1)
 		reset_fds(save);
 	return (0);
-}
-
-void	print_int_tab_tab(int **tab, char **command)
-{
-	int	i;
-	i = 0;
-	while (tab[i])
-	{
-		dprintf(1, "|%s| [%d] [%d]\n", command[i], tab[i][0], tab[i][1]);
-		i++;
-	}
 }
 
 int	pars_pipes(char **commands, t_env **env_list)
@@ -92,17 +84,21 @@ int	pars_pipes(char **commands, t_env **env_list)
 	i = 0;
 	while (commands[i])
 	{
-		ret = split_pipes(commands[i], &command);
+		ret = split_pipes(commands[i++], &command);
 		if (ret == 0)
 			return (error_ret_0("Syntax error"));
 		if (ret == -1)
 			return (-1);
-		dprintf(1, "%d\n", redirection(command, &fd_tab));
-		print_int_tab_tab(fd_tab, command);
-		if (pars_spaces(command, env_list) < 0)
+		ret = redirection(command, &fd_tab);
+		if (ret == 0)
+			return (free_split(command));
+		if (ret == -1)
 			return (free_split_ret_error(command));
+		ret = pars_spaces(command, env_list, fd_tab);
 		free_split(command);
-		i++;
+		free_close_fd_tab(fd_tab);
+		if (ret < 0)
+			return (ret);
 	}
 	return (0);
 }
@@ -114,7 +110,7 @@ int	pars_line(char *line, t_env **env_list)
 
 	if (!line)
 		return (-1);
-	if (check_quotes(line))
+	if (check_quotes(line) || line[ft_strlen(line) - 1] == '\\')
 		return (free_ret_error(line, "Syntax error", 0));
 	line = replace_vars(line, *env_list);
 	if (!line)

@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 14:49:21 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/05/21 15:32:39 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/01 15:55:13 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	get_var_end(char *var_start)
 
 	i = 1;
 	while (var_start[i] && (ft_isalnum(var_start[i]) || var_start[i] == '_'
-		|| var_start[i] == '?'))
+			|| var_start[i] == '?'))
 		i++;
 	return (i);
 }
@@ -51,6 +51,14 @@ int	cpy_replace_var(char **line, char *var_start, int var_end, t_env *list)
 	return (size);
 }
 
+void	check_quotes_norme(bool *simple_open, bool *double_open, char c)
+{
+	if (c == '\'' && !(*double_open))
+		(*simple_open) = !(*simple_open);
+	else if (c == '\"' && !(*simple_open))
+		(*double_open) = !(*double_open);
+}
+
 char	*replace_vars(char *line, t_env *list)
 {
 	int		i;
@@ -63,10 +71,7 @@ char	*replace_vars(char *line, t_env *list)
 	double_open = false;
 	while (line[i])
 	{
-		if (line[i] == '\'' && !double_open)
-			simple_open = !simple_open;
-		else if (line[i] == '\"' && !simple_open)
-			double_open = !double_open;
+		check_quotes_norme(&simple_open, &double_open, line[i]);
 		if (line[i] == '$' && !simple_open)
 		{
 			var_end = get_var_end(line + i);

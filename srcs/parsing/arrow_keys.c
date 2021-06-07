@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/29 15:58:08 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/05/17 16:35:50 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/01 19:09:16 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,16 @@ void	key_left_right(char *line, int buffer, t_curs_pos *cursor)
 		if ((cursor->path_size + cursor->line_pos) % win.ws_col > 0)
 			ft_printf("%s", tgetstr("le", NULL));
 		else
-			ft_printf("%s%s", tgetstr("up", NULL), 
-				tgoto(tgetstr("ch", NULL), 0, 
+			ft_printf("%s%s", tgetstr("up", NULL),
+				tgoto(tgetstr("ch", NULL), 0,
 					win.ws_col - 1));
 		cursor->line_pos--;
 	}
 	else if (buffer == ARROW_RIGHT
 		&& cursor->line_pos < ft_strlen(line))
 	{
-		if ((cursor->path_size + cursor->line_pos) % win.ws_col <  win.ws_col - 1)
+		if ((cursor->path_size + cursor->line_pos)
+			% win.ws_col < win.ws_col - 1)
 			ft_printf("%s", tgetstr("nd", NULL));
 		else
 			ft_printf("%s%s", tgetstr("do", NULL),

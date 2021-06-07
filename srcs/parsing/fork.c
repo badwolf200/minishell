@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 17:00:33 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/05/26 14:08:27 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/04 17:53:14 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ void	reset_fds(int *save)
 {
 	dup2(save[0], 0);
 	dup2(save[1], 1);
+	close(save[0]);
+	close(save[1]);
 }
 
 void	dup_in_close_new(int *new)
@@ -31,28 +33,51 @@ void	dup_in_close_new(int *new)
 	close(new[1]);
 }
 
-int	fork_execute(char **command, t_env **env_list, char status)
+int	fork_execute(char **command, t_env **env_list, int status, int *fd_tab)
 {
 	int	pid;
-	int new[2];
-	int save[2];
+	int	new[2];
 
-	save_fds(save);
-	if (status && pipe(new) < 0)
+	if ((status) && pipe(new) < 0)
 		return (free_split_ret_error(command));
 	pid = fork();
 	if (pid == -1)
 		return (free_split_ret_error(command));
 	else if (!pid)
 	{
-		if (status && dup2(new[1], 1) < 0)
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
+		if ((status) && dup2(new[1], 1) < 0)
 			exit(2);
-		exit(proceed_cmd(command, env_list));
+		exit(proceed_cmd(command, env_list, fd_tab));
 	}
 	wait(&pid);
 	if (status)
 		dup_in_close_new(new);
 	env_change_value("?", ft_itoa(WEXITSTATUS(pid)), *env_list);
-	reset_fds(save);
 	return (WEXITSTATUS(pid));
+}
+
+int	var_then_fork(char **command, t_env **env_list, int status, int *fd_tab)
+{
+	int	i;
+	int	ret;
+
+	i = 0;
+	while (command[i] && command[i][0] != '=' && ft_strchr(command[i], '='))
+	{
+		if (set_variable(command[i], env_list) == -1)
+			return (free_split_ret_error(command));
+		i++;
+	}
+	if (!status && !ft_strcmp(command[i], "cd"))
+		ret = proceed_cmd(command + i, env_list, fd_tab);
+	else
+	{
+		if (status == 2)
+			status -= 2;
+		ret = fork_execute(command + i, env_list, status, fd_tab);
+	}
+	free_split(command);
+	return (ret);
 }

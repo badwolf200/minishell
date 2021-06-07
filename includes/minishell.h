@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/23 11:38:25 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/05/28 17:39:46 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/07 17:34:45 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdio.h>
+# include <signal.h>
 # include <string.h>
 # include <sys/errno.h>
 # include <stdbool.h>
@@ -71,6 +72,8 @@ typedef struct s_env
 	struct s_env	*next;
 }				t_env;
 
+int			g_sigint;
+
 char		*env_get_value(char *name, t_env *list);
 void		set_visible(char *name, t_env *list);
 void		set_invisible(char *name, t_env *list);
@@ -83,7 +86,7 @@ int			error_ret_0(char *error);
 int			success_ret(char *str, t_env *e, struct termios sav, t_history *h);
 int			error_ret(char *str, t_env *e, struct termios sav, t_history *h);
 int			free_split(char **str);
-int			proceed_cmd(char **line, t_env **env_list);
+int			proceed_cmd(char **line, t_env **env_list, int *fd_tab);
 int			cmd_execve(char **cmd, t_env *env_list);
 int			cmd_cd(char **cmd);
 int			cmd_echo(char **cmd);
@@ -114,18 +117,29 @@ void		history_print_list(t_history *list);
 char		*arrow_keys(char *line, int buff, t_curs_pos *curs, t_history **l);
 void		key_left_right(char *line, int buffer, t_curs_pos *cursor);
 t_history	*history_del_first_link(t_history *link);
-bool		is_inside_quotes(char *line, int j);
+char		is_inside_quotes(char *line, int j);
 int			split_pipes(char *line, char ***commands);
 int			is_str_empty(char *str);
 int			pipe_start(t_pipe *pip);
 int			pipe_end(t_pipe pip);
 char		**split_spaces(char *line);
-int			fork_execute(char **command, t_env **env_list, char status);
+int			fork_execute(char **command, t_env **e_list, int stat, int *fd);
 void		reset_fds(int *save);
 void		save_fds(int *save);
 char		*delete_right(char *line, t_curs_pos *cursor);
 char		*delete_left(char *line, t_curs_pos *cursor);
 char		*add_char(char *line, int buffer, t_curs_pos *cursor);
 int			redirection(char **command, int ***fd_tab);
+int			open_in(char **command, int i, int *fd_tab);
+int			open_out(char **command, int i, int *fd_tab);
+char		*dup_name(char *str, int *i);
+int			goto_start_of_name(char *str, int i);
+void		free_close_fd_tab(int **fd_tab);
+int			free_ret_error(char *line, char *error, int	ret);
+int			var_then_fork(char **command, t_env **env, int status, int *fd);
+int			print_nice_path(void);
+int			is_escaped(char *str, int i);
+char		*remove_escape_chars(char *str, char c1, char c2);
+char		**remove_escape_from_split(char **str, char c1, char c2);
 
 #endif
