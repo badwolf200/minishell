@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 17:17:12 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/06/04 17:40:14 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/09 14:30:51 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	set_variable(char *command, t_env **list)
 	char	*value;
 
 	i = 0;
-	while (command[i] != '=')
+	while (command[i] != '=' || is_escaped(command, i))
 		i++;
 	command[i++] = '\0';
 	value = ft_strdup(command + i);

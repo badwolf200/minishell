@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 17:49:48 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/06/07 17:34:37 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/09 17:20:09 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,15 @@ char	is_inside_quotes(char *line, int j)
 	open_single = false;
 	while (i < j)
 	{
-		if (line[i] == '\'' && !is_escaped(line, i) && !open_double)
+		if (line[i] == '\'' && !open_double)
 			open_single = !open_single;
-		else if (line[i] == '\"' && !is_escaped(line, i) && !open_single)
+		else if (line[i] == '\"' && !open_single)
 			open_double = !open_double;
 		i++;
 	}
-	if (line[i] == '\'' && !is_escaped(line, i) && !open_double)
+	if (line[i] == '\'' && !open_double)
 		open_single = false;
-	else if (line[i] == '\"' && !is_escaped(line, i) && !open_single)
+	else if (line[i] == '\"' && !open_single)
 		open_double = false;
 	if (open_double)
 		return ('\"');

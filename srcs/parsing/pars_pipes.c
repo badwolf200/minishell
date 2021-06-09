@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 14:24:11 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/05/28 17:38:29 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/07 20:18:45 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,15 @@ int	check_double_pipes(char *str)
 	i = 0;
 	while (str[i + 1])
 	{
-		if (str[i] == '|' && str[i + 1] == '|')
+		if (str[i] == '|' && str[i + 1] == '|'
+			&& !is_escaped(str, i) && !is_inside_quotes(str, i))
 			return (1);
 		i++;
 	}
 	i++;
 	while (i <= 0 && str[i] == ' ')
 		i--;
-	if (i == '|')
+	if (str[i] == '|' && !is_escaped(str, i))
 		return (1);
 	return (0);
 }
@@ -34,25 +35,18 @@ int	check_double_pipes(char *str)
 int	get_nb_pipes(char *line)
 {
 	int		i;
-	int		nb_semicolons;
-	bool	open_single;
-	bool	open_double;
+	int		nb;
 
 	i = 0;
-	nb_semicolons = 0;
-	open_double = false;
-	open_single = false;
+	nb = 0;
 	while (line[i])
 	{
-		if (line[i] == '\'' && !open_double)
-			open_single = !open_single;
-		else if (line[i] == '\"' && !open_single)
-			open_double = !open_double;
-		else if (line[i] == '|')
-			nb_semicolons++;
+		if (line[i] == '|' && !is_inside_quotes(line, i)
+			&& !is_escaped(line, i))
+			nb++;
 		i++;
 	}
-	return (nb_semicolons);
+	return (nb);
 }
 
 char	**fill_split_pipes(char *line, char **strs)
@@ -66,7 +60,8 @@ char	**fill_split_pipes(char *line, char **strs)
 	j = 0;
 	while (previous < (int)ft_strlen(line))
 	{
-		while ((line[i] && (line[i] != '|' || is_inside_quotes(line, i))))
+		while ((line[i] && (line[i] != '|'
+					|| is_inside_quotes(line, i) || is_escaped(line, i))))
 			i++;
 		strs[j] = ft_strndup(line + previous, i - previous);
 		if (!strs[j])
@@ -106,6 +101,8 @@ int	split_pipes(char *line, char ***commands)
 		}
 		i++;
 	}
-	*commands = strs;
+	*commands = remove_escape_from_split(strs, '|', '|');
+	if (!(*commands))
+		return (-1);
 	return (1);
 }

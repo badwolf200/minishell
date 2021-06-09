@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 17:00:33 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/06/04 17:53:14 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/09 16:58:59 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,15 +64,20 @@ int	var_then_fork(char **command, t_env **env_list, int status, int *fd_tab)
 	int	ret;
 
 	i = 0;
-	while (command[i] && command[i][0] != '=' && ft_strchr(command[i], '='))
+	ret = 0;
+	while (command[i] && command[i][0] != '='
+		&& unescaped_strchr(command[i], '='))
 	{
 		if (set_variable(command[i], env_list) == -1)
 			return (free_split_ret_error(command));
 		i++;
 	}
-	if (!status && !ft_strcmp(command[i], "cd"))
+	command = remove_escape_from_split(command, '=', '\\');
+	if (!command)
+		return (-1);
+	if (command[i] && !status && !ft_strcmp(command[i], "cd"))
 		ret = proceed_cmd(command + i, env_list, fd_tab);
-	else
+	else if (command[i])
 	{
 		if (status == 2)
 			status -= 2;

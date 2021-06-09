@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/25 17:12:28 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/06/01 15:39:13 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/09 14:27:51 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	pars_out(char **command, int *fd_tab)
 
 	i = 0;
 	while (command[0][i] && (is_inside_quotes(command[0], i)
-		|| command[0][i] != '>'))
+		|| command[0][i] != '>' || is_escaped(command[0], i)))
 		i++;
 	if ((int)ft_strlen(command[0]) > i)
 	{
@@ -67,7 +67,7 @@ int	pars_in(char **command, int *fd_tab)
 
 	i = 0;
 	while (command[0][i] && (is_inside_quotes(command[0], i)
-		|| command[0][i] != '<'))
+		|| command[0][i] != '<' || is_escaped(command[0], i)))
 		i++;
 	if ((int)ft_strlen(command[0]) > i)
 	{
@@ -101,5 +101,8 @@ int	redirection(char **command, int ***fd_tab)
 			return (free_split_perror_ret_0((char **)*fd_tab));
 		i++;
 	}
+	command = remove_escape_from_split(command, '<', '>');
+	if (!command)
+		return (-1);
 	return (1);
 }

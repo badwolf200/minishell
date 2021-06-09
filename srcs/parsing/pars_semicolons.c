@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 14:24:11 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/06/07 18:19:48 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/07 20:18:40 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ int	get_nb_semicolons(char *line)
 	int		i;
 	int		nb_semicolons;
 
-
 	i = 0;
 	nb_semicolons = 0;
 	while (line[i])
@@ -71,7 +70,7 @@ char	**fill_split_semicolons(char *line, char **strs)
 	while (previous < (int)ft_strlen(line))
 	{
 		while ((line[i] && (line[i] != ';'
-				|| is_inside_quotes(line, i) || is_escaped(line, i))))
+					|| is_inside_quotes(line, i) || is_escaped(line, i))))
 			i++;
 		strs[j] = ft_strndup(line + previous, i - previous);
 		if (!strs[j])

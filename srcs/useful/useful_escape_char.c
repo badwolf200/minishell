@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/07 14:58:45 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/06/07 18:22:38 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/09 15:26:17 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@ void	copy_clear_str(char *str, char *new, char c1, char c2)
 	j = 0;
 	while (str[i])
 	{
-		while (str[i] && str[i] != c1 && str[i] != c2)
-			new[j++] = str[i++];
-		if (str[i] && is_escaped(str, i) && !is_inside_quotes(str, i))
-			new[j - 1] = str[i];
-		if (str[i])
-			i++;
+		if (str[i + 1] && (str[i + 1] == c1 || str[i + 1] == c2)
+			&& is_escaped(str, i + 1) && !is_inside_quotes(str, i + 1))
+			new[j++] = str[++i];
+		else
+			new[j++] = str[i];
+		i++;
 	}
 	new[j] = 0;
 }
@@ -83,4 +83,16 @@ char	**remove_escape_from_split(char **str, char c1, char c2)
 		}
 	}
 	return (str);
+}
+
+char	*unescaped_strchr(char *str, char c)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] && (str[i] != c || is_escaped(str, i)))
+		i++;
+	if (str[i])
+		return (str + i);
+	return (NULL);
 }

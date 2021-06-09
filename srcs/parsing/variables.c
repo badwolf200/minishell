@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 14:49:21 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/06/01 15:55:13 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/09 18:00:13 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,28 +51,16 @@ int	cpy_replace_var(char **line, char *var_start, int var_end, t_env *list)
 	return (size);
 }
 
-void	check_quotes_norme(bool *simple_open, bool *double_open, char c)
-{
-	if (c == '\'' && !(*double_open))
-		(*simple_open) = !(*simple_open);
-	else if (c == '\"' && !(*simple_open))
-		(*double_open) = !(*double_open);
-}
-
 char	*replace_vars(char *line, t_env *list)
 {
 	int		i;
-	bool	simple_open;
-	bool	double_open;
 	int		var_end;
 
 	i = 0;
-	simple_open = false;
-	double_open = false;
 	while (line[i])
 	{
-		check_quotes_norme(&simple_open, &double_open, line[i]);
-		if (line[i] == '$' && !simple_open)
+		if (line[i] == '$' && is_inside_quotes(line, i) != '\''
+			&& !is_escaped(line, i) && (get_var_end(line + i) - i) > 0)
 		{
 			var_end = get_var_end(line + i);
 			i = cpy_replace_var(&line, line + i, var_end, list);

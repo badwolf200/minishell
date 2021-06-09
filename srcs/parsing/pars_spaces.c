@@ -1,16 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   spaces_quotes.c                                    :+:      :+:    :+:   */
+/*   pars_spaces.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 17:41:34 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/05/19 14:35:26 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/09 17:20:15 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	go_end_quotes(char *str, int i)
+{
+	char	c;
+
+	c = str[i];
+	while (str[i] != c)
+		i++;
+	return (i);
+}
 
 int	get_nb_spaces(char *line)
 {
@@ -23,10 +33,10 @@ int	get_nb_spaces(char *line)
 		i++;
 	while (line[i])
 	{
-		if (line[i] == ' ' && (line[i - 1] != ' ' || i == 0))
+		if (line[i] == ' ' && (i == 0 || line[i - 1] != ' '))
 			nb_args++;
 		else if (line[i] == '\'' || line[i] == '\"')
-			i = ft_strchr((line + i + 1), line[i]) - line;
+			i = go_end_quotes(line, i);
 		i++;
 	}
 	if (line[i - 1] != ' ')
@@ -70,6 +80,9 @@ char	**split_spaces(char *line)
 	char	**strs;
 	int		j;
 
+	line = add_escapes_equal(line);
+	if (!line)
+		return (NULL);
 	nb_words = get_nb_spaces(line);
 	strs = malloc(sizeof(char *) * (nb_words + 1));
 	if (!strs)

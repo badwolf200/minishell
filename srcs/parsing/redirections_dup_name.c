@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/01 15:06:49 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/06/01 15:37:43 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/08 15:12:49 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ int	get_name_size(char *str)
 	while (str[i] && ((str[i] != ' ' && str[i] != '>' && str[i] != '<')
 			|| is_inside_quotes(str, i)))
 	{
-		if ((str[i] != '\"' && str[i] != '\'') || is_inside_quotes(str, i))
+		if ((str[i] != '\"' && str[i] != '\'' && str[i] != '\\')
+				|| is_inside_quotes(str, i) || is_escaped(str, i))
 			size++;
 		i++;
 	}
@@ -67,7 +68,8 @@ char	*dup_name(char *str, int *i)
 	while (str[*i] && ((str[*i] != ' ' && str[*i] != '>' && str[*i] != '<')
 			|| is_inside_quotes(str, *i)))
 	{
-		if ((str[*i] != '\"' && str[*i] != '\'') || is_inside_quotes(str, *i))
+		if ((str[*i] != '\"' && str[*i] != '\'' && str[*i] != '\\')
+				|| is_inside_quotes(str, *i) || is_escaped(str, *i))
 			new[j++] = str[*i];
 		(*i)++;
 	}

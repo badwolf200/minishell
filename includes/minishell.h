@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/23 11:38:25 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/06/07 17:34:45 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/09 16:58:13 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,5 +141,8 @@ int			print_nice_path(void);
 int			is_escaped(char *str, int i);
 char		*remove_escape_chars(char *str, char c1, char c2);
 char		**remove_escape_from_split(char **str, char c1, char c2);
+char		*add_escapes_equal(char *str);
+char		*unescaped_strchr(char *str, char c);
+int			check_escapes(char *str);
 
 #endif
