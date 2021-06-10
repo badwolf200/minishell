@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/29 14:40:53 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/06/02 16:22:06 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/10 19:22:34 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 int	error_ret_0(char *error)
 {
-	ft_printf("%s\n", error);
+	write(2, error, ft_strlen(error));
+	write(2, "\n", 1);
 	return (0);
 }
 
@@ -27,7 +28,9 @@ int	error_ret(char *str, t_env *env, struct termios saved, t_history *histo)
 	else
 		free(str);
 	reset_input_mode(saved);
-	ft_printf("Error : %s\n", strerror(errno));
+	write(2, "Error : ", 8);
+	write(2, strerror(errno), ft_strlen(strerror(errno)));
+	write(2, "\n", 1);
 	signal(SIGINT, SIG_DFL);
 	return (EXIT_FAILURE);
 }
@@ -51,7 +54,10 @@ int	success_ret(char *str, t_env *env, struct termios saved, t_history *histo)
 int	free_ret_error(char *line, char *error, int	ret)
 {
 	if (error)
-		ft_printf("%s\n", error);
+	{
+		write(2, error, ft_strlen(error));
+		write(2, "\n", 1);
+	}
 	free(line);
 	return (ret);
 }

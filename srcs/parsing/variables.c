@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 14:49:21 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/06/09 18:00:13 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/10 18:48:40 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ char	*replace_vars(char *line, t_env *list)
 	while (line[i])
 	{
 		if (line[i] == '$' && is_inside_quotes(line, i) != '\''
-			&& !is_escaped(line, i) && (get_var_end(line + i) - i) > 0)
+			&& !is_escaped(line, i) && get_var_end(line + i) > 1)
 		{
 			var_end = get_var_end(line + i);
 			i = cpy_replace_var(&line, line + i, var_end, list);

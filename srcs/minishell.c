@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 17:50:04 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/06/07 17:45:49 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/10 19:41:03 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	main(int argc, char **argv, char **env)
 			return (error_ret(NULL, env_list, saved, histo_list));
 		if (!ft_strcmp(line, "exit"))
 			return (success_ret(line, env_list, saved, histo_list));
-		if (pars_line (ft_strdup(line), &env_list) == -1)
+		if (pars_line(ft_strdup(line), &env_list) == -1)
 			return (error_ret(line, env_list, saved, histo_list));
 	}
 	ft_printf("You weren't supposed to do that\n");

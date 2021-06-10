@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 17:17:12 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/06/09 14:30:51 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/10 19:24:18 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	cmd_cd(char **cmd)
 {
 	if (cmd[1] && cmd[2])
-		ft_printf("Error : too many arguments\n");
+		write(2, "Error : too many arguments\n", 27);
 	else if (cmd[1])
 		chdir(cmd[1]);
 	else
@@ -23,7 +23,7 @@ int	cmd_cd(char **cmd)
 	if (errno == 2)
 	{
 		errno = 0;
-		write(1, "Where ?\n", 8);
+		write(2, "Where ?\n", 8);
 	}
 	return (0);
 }

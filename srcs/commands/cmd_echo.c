@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/04 17:39:26 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/06/04 17:52:03 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/10 14:22:56 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	is_option_n(char *str)
 	i = 1;
 	while (str[i] == 'n')
 		i++;
-	if (str[i] != '\0')
+	if (str[i] != '\0' || i == 1)
 		return (0);
 	return (1);
 }

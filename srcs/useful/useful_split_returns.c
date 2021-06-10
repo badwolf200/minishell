@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 17:07:48 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/06/01 19:10:58 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/10 19:17:48 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,6 @@ int	free_split_perror_ret_0(char **split)
 	while (split[i])
 		free(split[i++]);
 	free(split);
-	ft_printf("Syntax error\n");
+	write(2, "Syntax error\n", 13);
 	return (0);
 }
