@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 17:50:41 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/06/08 19:04:02 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/11 18:16:53 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ int	cmd_searching(char **cmd, t_env **env_list)
 	else if (!ft_strcmp(cmd[0], "unset"))
 		ret = cmd_unset(cmd, env_list);
 	else if (!ft_strcmp(cmd[0], "cd"))
-		ret = cmd_cd(cmd);
+		ret = cmd_cd(cmd, env_list);
 	else if (!ft_strcmp(cmd[0], "pwd"))
-		ret = cmd_pwd(cmd);
+		ret = cmd_pwd(cmd, *env_list);
 	else if (!ft_strcmp(cmd[0], "echo"))
 		ret = cmd_echo(cmd);
 	else

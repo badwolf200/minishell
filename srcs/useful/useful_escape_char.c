@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/07 14:58:45 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/06/09 15:26:17 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/11 17:00:53 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ char	*remove_escape_chars(char *str, char c1, char c2)
 char	**remove_escape_from_split(char **str, char c1, char c2)
 {
 	int	i;
-	
+
 	i = 0;
 	while (str[i])
 		i++;

@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/23 11:38:25 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/06/09 16:58:13 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/11 18:19:39 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,9 +88,9 @@ int			error_ret(char *str, t_env *e, struct termios sav, t_history *h);
 int			free_split(char **str);
 int			proceed_cmd(char **line, t_env **env_list, int *fd_tab);
 int			cmd_execve(char **cmd, t_env *env_list);
-int			cmd_cd(char **cmd);
+int			cmd_cd(char **cmd, t_env **list);
 int			cmd_echo(char **cmd);
-int			cmd_pwd(char **cmd);
+int			cmd_pwd(char **cmd, t_env *list);
 int			cmd_env(char **cmd, t_env *environ);
 int			cmd_export(char **cmd, t_env *list);
 int			cmd_unset(char **cmd, t_env **list);

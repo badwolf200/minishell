@@ -6,20 +6,31 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 17:17:12 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/06/10 19:24:18 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/11 18:27:17 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	cmd_cd(char **cmd)
+int	cmd_cd(char **cmd, t_env **list)
 {
 	if (cmd[1] && cmd[2])
 		write(2, "Error : too many arguments\n", 27);
 	else if (cmd[1])
+	{
 		chdir(cmd[1]);
+		if (!ft_strcmp("//", cmd[1]))
+		{
+			env_change_value("PWD", ft_strdup("//"), *list);
+		}
+		else
+			env_change_value("PWD", getcwd(NULL, 0), *list);
+	}
 	else
+	{
 		chdir(getenv("HOME"));
+		env_change_value("PWD", ft_strdup(getenv("HOME")), *list);
+	}
 	if (errno == 2)
 	{
 		errno = 0;
@@ -28,18 +39,11 @@ int	cmd_cd(char **cmd)
 	return (0);
 }
 
-int	cmd_pwd(char **cmd)
+int	cmd_pwd(char **cmd, t_env *list)
 {
-	char	*path;
-
-	path = NULL;
 	if (cmd[1])
 		return (error_ret_0("Error : too many arguments"));
-	path = getcwd(path, 0);
-	if (!path)
-		return (-1);
-	ft_printf("%s\n", path);
-	free(path);
+	ft_printf("%s\n", env_get_value("PWD", list));
 	return (0);
 }
 

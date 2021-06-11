@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 17:50:04 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/06/10 19:41:03 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/11 18:21:25 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,16 @@
 
 int	print_nice_path(void)
 {
-	char	*path;
 	int		ret;
 
 	ret = 0;
 	if (g_sigint != 1)
 	{
-		path = NULL;
-		path = getcwd(path, 0);
-		if (!path)
-			return (-1);
 		ft_printf(ANSI_COLOR_BLUE);
-		ret = ft_printf("minishell");
-		ft_printf(ANSI_COLOR_RESET);
-		ret += ft_printf(" \"%s\" ", path);
+		ret = ft_printf("minishell ");
 		ft_printf(ANSI_COLOR_GREEN);
 		ret += ft_printf(">> ");
 		ft_printf(ANSI_COLOR_RESET);
-		free(path);
 	}
 	if (g_sigint)
 		g_sigint--;

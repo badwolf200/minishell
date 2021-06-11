@@ -6,7 +6,7 @@
 #    By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/02 14:55:32 by rkowalsk          #+#    #+#              #
-#    Updated: 2021/06/09 16:58:43 by rkowalsk         ###   ########lyon.fr    #
+#    Updated: 2021/06/11 18:00:22 by rkowalsk         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,18 +50,18 @@ INCLUDES = includes/minishell.h \
 
 LIBFT = libft/libft.a
 
+.PHONY: all clean fclean re lib
+
+all: lib $(NAME)
+
+lib:
+	$(MAKE) -C libft all
+
 $(NAME): $(OBJS) $(LIBFT)
-	clang -o $(NAME) $(OBJS) $(LIBFT) -ltermcap 
+	clang -o $(NAME) $(OBJS) $(LIBFT) -ltermcap
 
 $(OBJS): %.o: %.c $(INCLUDES)
 	clang -Wall -Wextra -Werror -Iincludes -c $< -o $@
-
-$(LIBFT): 
-	$(MAKE) -C libft all
-
-.PHONY: all clean fclean re
-
-all: $(LIBFT) $(NAME)
 
 clean:
 	rm -f $(OBJS)

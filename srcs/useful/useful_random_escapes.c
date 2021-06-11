@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 16:52:09 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/06/09 17:20:59 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/11 17:01:22 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	check_escapes(char *str)
 	{
 		if (is_escaped(str, i) && str[i] != '\\' && str[i] != ';'
 			&& str[i] != '|' && str[i] != '>' && str[i] != '<'
-				&& str[i] != '$')
+			&& str[i] != '$')
 			return (-1);
 		i++;
 	}

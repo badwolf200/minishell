@@ -6,7 +6,7 @@
 #    By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/17 15:52:56 by rkowalsk          #+#    #+#              #
-#    Updated: 2021/04/14 14:18:30 by rkowalsk         ###   ########lyon.fr    #
+#    Updated: 2021/06/11 17:36:12 by rkowalsk         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -69,12 +69,12 @@ OBJS = ${SRCS:.c=.o}
 .PHONY: fclean
 .PHONY: re 
 
-%o: %c $(HEADER)
-	gcc $(FLAGS) -I$(HEADER) -c $< -o $@
-
 $(NAME): $(OBJS)
 	ar rc $(NAME) $(OBJS)
 
+$(OBJS): %.o: %.c $(HEADER)
+	gcc $(FLAGS) -I$(HEADER) -c $< -o $@
+	
 all: $(NAME)
 
 clean:
