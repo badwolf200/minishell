@@ -6,7 +6,7 @@
 #    By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/02 14:55:32 by rkowalsk          #+#    #+#              #
-#    Updated: 2021/06/14 19:10:27 by rkowalsk         ###   ########lyon.fr    #
+#    Updated: 2021/06/14 19:15:49 by rkowalsk         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,7 +61,7 @@ $(NAME): $(OBJS) $(LIBFT)
 	clang -o $(NAME) $(OBJS) $(LIBFT) -ltermcap
 
 $(OBJS): %.o: %.c $(INCLUDES)
-	clang -Wall -Wextra -Werror-Iincludes -c $< -o $@
+	clang -Wall -Wextra -Werror -Iincludes -c $< -o $@
 
 clean:
 	rm -f $(OBJS)
