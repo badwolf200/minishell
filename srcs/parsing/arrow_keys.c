@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/29 15:58:08 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/06/01 19:09:16 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/14 15:19:40 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ char	*key_up_down(char *line, int buff, t_curs_pos *curs, t_history **list)
 		curs->line_pos = ft_strlen((*list)->line);
 		return (ft_strdup((*list)->line));
 	}
-	else if (buff == ARROW_DOWN && (*list)->previous != NULL)
+	else if (buff == ARROW_DOWN && (*list)->previous->previous != NULL)
 	{
 		line = del_line(line, curs);
 		if (!line)

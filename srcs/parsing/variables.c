@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 14:49:21 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/06/10 18:48:40 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/14 18:36:45 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,9 @@ char	*replace_vars(char *line, t_env *list)
 	int		var_end;
 
 	i = 0;
+	line = ft_strdup(line);
+	if (!line)
+		return (NULL);
 	while (line[i])
 	{
 		if (line[i] == '$' && is_inside_quotes(line, i) != '\''

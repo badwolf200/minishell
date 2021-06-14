@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 17:41:34 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/06/09 17:20:15 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/14 18:34:47 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,20 +73,11 @@ char	*dup_next_word(char *l, int *i)
 	return (new);
 }
 
-char	**split_spaces(char *line)
+int	copy_every_word(char *line, int nb_words, char **strs)
 {
-	int		i;
-	int		nb_words;
-	char	**strs;
-	int		j;
+	int	i;
+	int	j;
 
-	line = add_escapes_equal(line);
-	if (!line)
-		return (NULL);
-	nb_words = get_nb_spaces(line);
-	strs = malloc(sizeof(char *) * (nb_words + 1));
-	if (!strs)
-		return (NULL);
 	i = 0;
 	j = 0;
 	while (line[i] && j < nb_words)
@@ -95,9 +86,29 @@ char	**split_spaces(char *line)
 			i++;
 		strs[j] = dup_next_word(line, &i);
 		if (!strs[j++])
-			free_split_ret_error(strs);
-		i++;
+			return (free_split_ret_error(strs));
+		if (line[i])
+			i++;
 	}
 	strs[j] = NULL;
+	return (0);
+}
+
+char	**split_spaces(char *line, t_env *env_list)
+{
+	int		nb_words;
+	char	**strs;
+
+	line = replace_vars(line, env_list);
+	if (!line)
+		return (NULL);
+	line = add_escapes_equal(line);
+	if (!line)
+		return (NULL);
+	nb_words = get_nb_spaces(line);
+	strs = malloc(sizeof(char *) * (nb_words + 1));
+	if (!strs || copy_every_word(line, nb_words, strs) < 0)
+		return (NULL);
+	free(line);
 	return (strs);
 }

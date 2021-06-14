@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 14:08:13 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/06/09 17:23:49 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/14 18:37:33 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,17 @@ char	*add_escapes_equal(char *str)
 	j = 0;
 	while (str[i])
 	{
-		if ((str[i] == '=' || str[i] == '\\')
-			&& is_inside_quotes(str, i))
+		if ((str[i] == '=' || str[i] == '\\') && is_inside_quotes(str, i))
 			j++;
 		i++;
 	}
 	new = malloc(sizeof(char) * (ft_strlen(str) + j + 1));
 	if (!new)
+	{
+		free(str);
 		return (NULL);
+	}
 	copy_str_to_new(str, new);
+	free(str);
 	return (new);
 }

@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 14:33:54 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/06/09 16:58:00 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/14 18:33:20 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	pars_spaces(char **command, t_env **env_list, int **fd_tab)
 		status = (command[i + 1] != NULL);
 		if (i > 0)
 			status += 2;
-		line = split_spaces(command[i]);
+		line = split_spaces(command[i], *env_list);
 		if (!line)
 			return (reset_fds_ret_error(save, i));
 		status = var_then_fork(line, env_list, status, fd_tab[i]);
@@ -112,10 +112,8 @@ int	pars_line(char *line, t_env **env_list)
 		return (-1);
 	if (check_quotes(line) || check_escapes(line))
 		return (free_ret_error(line, "Syntax error", 0));
-	line = replace_vars(line, *env_list);
-	if (!line)
-		return (-1);
 	commands = split_semicolons(line);
+	free(line);
 	if (errno)
 		return (-1);
 	if (!commands)

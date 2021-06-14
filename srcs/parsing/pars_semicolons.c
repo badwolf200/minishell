@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 14:24:11 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/06/07 20:18:40 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/14 15:23:52 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	check_double_semicolon(char *str)
 	int	i;
 
 	i = 0;
-	while (str[i + 1])
+	while (str[i] && str[i + 1])
 	{
 		if (str[i] == ';' && str[i + 1] == ';'
 			&& !is_inside_quotes(str, i) && !is_escaped(str, i))

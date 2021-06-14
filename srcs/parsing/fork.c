@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 17:00:33 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/06/09 16:58:59 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/14 18:05:50 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,31 +58,31 @@ int	fork_execute(char **command, t_env **env_list, int status, int *fd_tab)
 	return (WEXITSTATUS(pid));
 }
 
-int	var_then_fork(char **command, t_env **env_list, int status, int *fd_tab)
+int	var_then_fork(char **line, t_env **env_list, int status, int *fd_tab)
 {
 	int	i;
 	int	ret;
 
 	i = 0;
 	ret = 0;
-	while (command[i] && command[i][0] != '='
-		&& unescaped_strchr(command[i], '='))
+	while (line[i] && line[i][0] != '='
+		&& unescaped_strchr(line[i], '='))
 	{
-		if (set_variable(command[i], env_list) == -1)
-			return (free_split_ret_error(command));
+		if (set_variable(line[i], env_list) == -1)
+			return (free_split_ret_error(line));
 		i++;
 	}
-	command = remove_escape_from_split(command, '=', '\\');
-	if (!command)
+	line = remove_escape_from_split(line, '=', '\\');
+	if (!line)
 		return (-1);
-	if (command[i] && !status && !ft_strcmp(command[i], "cd"))
-		ret = proceed_cmd(command + i, env_list, fd_tab);
-	else if (command[i])
+	if (line[i] && !status && !ft_strcmp(line[i], "cd"))
+		ret = proceed_cmd(line + i, env_list, fd_tab);
+	else if (line[i])
 	{
 		if (status == 2)
 			status -= 2;
-		ret = fork_execute(command + i, env_list, status, fd_tab);
+		ret = fork_execute(line + i, env_list, status, fd_tab);
 	}
-	free_split(command);
+	free_split(line);
 	return (ret);
 }

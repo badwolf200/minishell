@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/23 11:38:25 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/06/11 18:19:39 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/14 18:59:07 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int			error_ret(char *str, t_env *e, struct termios sav, t_history *h);
 int			free_split(char **str);
 int			proceed_cmd(char **line, t_env **env_list, int *fd_tab);
 int			cmd_execve(char **cmd, t_env *env_list);
-int			cmd_cd(char **cmd, t_env **list);
+int			cmd_cd(char **cmd, t_env *list);
 int			cmd_echo(char **cmd);
 int			cmd_pwd(char **cmd, t_env *list);
 int			cmd_env(char **cmd, t_env *environ);
@@ -122,7 +122,7 @@ int			split_pipes(char *line, char ***commands);
 int			is_str_empty(char *str);
 int			pipe_start(t_pipe *pip);
 int			pipe_end(t_pipe pip);
-char		**split_spaces(char *line);
+char		**split_spaces(char *line, t_env *env);
 int			fork_execute(char **command, t_env **e_list, int stat, int *fd);
 void		reset_fds(int *save);
 void		save_fds(int *save);
