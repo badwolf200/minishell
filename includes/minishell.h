@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/23 11:38:25 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/06/14 18:59:07 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/15 12:54:38 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,5 +144,6 @@ char		**remove_escape_from_split(char **str, char c1, char c2);
 char		*add_escapes_equal(char *str);
 char		*unescaped_strchr(char *str, char c);
 int			check_escapes(char *str);
+int			check_fd_tab(int *fd);
 
 #endif

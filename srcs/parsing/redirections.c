@@ -6,11 +6,28 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/25 17:12:28 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/06/09 14:27:51 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/15 13:03:34 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	check_fd_tab(int *fd)
+{
+	if (fd[0] < 0 || fd[1] < 0)
+	{
+		if (errno == 1 || errno == 2 || errno == 13)
+		{
+			write(2, strerror(errno), ft_strlen(strerror(errno)));
+			write(2, "\n", 1);
+			errno = 0;
+			return (0);
+		}
+		else
+			return (-1);
+	}
+	return (1);
+}
 
 int	**init_tab(char **command)
 {
