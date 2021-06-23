@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/23 11:38:25 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/06/15 12:54:38 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/23 17:07:22 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,5 +145,6 @@ char		*add_escapes_equal(char *str);
 char		*unescaped_strchr(char *str, char c);
 int			check_escapes(char *str);
 int			check_fd_tab(int *fd);
+char		*key_up_down(char *line, int buff, t_curs_pos *c, t_history **l);
 
 #endif

@@ -6,7 +6,7 @@
 #    By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/02 14:55:32 by rkowalsk          #+#    #+#              #
-#    Updated: 2021/06/14 19:15:49 by rkowalsk         ###   ########lyon.fr    #
+#    Updated: 2021/06/23 17:06:08 by rkowalsk         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,6 +39,7 @@ SRCS = \
 	srcs/parsing/get_line.c \
 	srcs/parsing/get_line2.c \
 	srcs/parsing/arrow_keys.c \
+	srcs/parsing/arrow_up_down.c \
 	srcs/environment_list/env_list.c \
 	srcs/environment_list/env_list_2.c \
 	srcs/history_list/history_struct.c

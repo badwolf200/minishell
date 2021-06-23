@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/29 15:58:08 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/06/14 15:19:40 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/23 17:02:58 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,43 +38,6 @@ void	key_left_right(char *line, int buffer, t_curs_pos *cursor)
 				tgoto(tgetstr("ch", NULL), 0, 0));
 		cursor->line_pos++;
 	}
-}
-
-char	*del_line(char *line, t_curs_pos *cursor)
-{
-	goto_endofline(cursor, line);
-	while (cursor->line_pos > 0 && line)
-		line = delete_left(line, cursor);
-	return (line);
-}
-
-char	*key_up_down(char *line, int buff, t_curs_pos *curs, t_history **list)
-{
-	if ((buff == KEY_DLE || buff == ARROW_UP) && (*list)->next)
-	{
-		line = del_line(line, curs);
-		if (!line)
-			return (NULL);
-		*list = (*list)->next;
-		free(line);
-		write(1, (*list)->line, ft_strlen((*list)->line));
-		curs->line_pos = ft_strlen((*list)->line);
-		return (ft_strdup((*list)->line));
-	}
-	else if (buff == ARROW_DOWN && (*list)->previous->previous != NULL)
-	{
-		line = del_line(line, curs);
-		if (!line)
-			return (NULL);
-		*list = (*list)->previous;
-		free(line);
-		if ((*list)->line)
-			write(1, (*list)->line, ft_strlen((*list)->line));
-		if ((*list)->line)
-			curs->line_pos = ft_strlen((*list)->line);
-		return (ft_strdup((*list)->line));
-	}
-	return (line);
 }
 
 void	key_home_end(char *line, int buffer, t_curs_pos *cursor)

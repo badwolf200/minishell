@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/19 17:42:28 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/06/14 15:14:29 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/23 17:10:52 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*ret_exit(void)
 	return (ft_strdup("exit"));
 }
 
-char 	*read_buffer(int *buffer, char *line, t_curs_pos *curs)
+char 	*read_buffer(int *buffer, char *line, t_curs_pos *curs, t_history **h)
 {
 	int	ret;
 
@@ -41,6 +41,7 @@ char 	*read_buffer(int *buffer, char *line, t_curs_pos *curs)
 	{
 		free(line);
 		line = ft_strdup("");
+		(*h)->line = line;
 		curs->line_pos = 0;
 		g_sigint = false;
 	}
@@ -54,7 +55,7 @@ char	*read_loop(t_curs_pos curs, char *line, t_history **hist, int *buffer)
 	curr_hist = *hist;
 	while (*buffer != '\n')
 	{
-		line = read_buffer(buffer, line, &curs);
+		line = read_buffer(buffer, line, &curs, hist);
 		if (!line)
 			return (NULL);
 		else if (*buffer == CTRL_D)
