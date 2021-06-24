@@ -6,20 +6,25 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 17:17:12 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/06/14 19:02:52 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/24 16:27:01 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	cmd_cd(char **cmd, t_env *list)
+int	change_dir(char **cmd, t_env *list)
 {
+	char	*tmp;
+
 	if (cmd[1])
 	{
 		chdir(cmd[1]);
 		if (!ft_strcmp("//", cmd[1]))
 		{
-			env_change_value("PWD", ft_strdup("//"), list);
+			tmp = ft_strdup("//");
+			if (!tmp)
+				return (-1);
+			env_change_value("PWD", tmp, list);
 		}
 		else
 			env_change_value("PWD", getcwd(NULL, 0), list);
@@ -27,13 +32,23 @@ int	cmd_cd(char **cmd, t_env *list)
 	else
 	{
 		chdir(getenv("HOME"));
-		env_change_value("PWD", ft_strdup(getenv("HOME")), list);
+		tmp = ft_strdup(getenv("HOME"));
+		if (!tmp)
+			return (-1);
+		env_change_value("PWD", tmp, list);
 	}
+	return (0);
+}
+
+int	cmd_cd(char **cmd, t_env *list)
+{
+	if (change_dir(cmd, list) < 0)
+		return (-1);
 	if (errno == 2)
 	{
 		errno = 0;
 		write(2, "Where ?\n", 8);
-		env_change_value("?", ft_strdup("1"), list);
+		return (1);
 	}
 	return (0);
 }
@@ -42,8 +57,8 @@ int	cmd_pwd(char **cmd, t_env *list)
 {
 	if (cmd[1])
 	{
-		env_change_value("?", ft_strdup("1"), list);
-		return (error_ret_0("Error : too many arguments"));
+		write(2, "Error : too many arguments\n", 27);
+		return (1);
 	}
 	ft_printf("%s\n", env_get_value("PWD", list));
 	return (0);
@@ -56,25 +71,29 @@ int	cmd_env(char **cmd, t_env *env_list)
 	i = 0;
 	if (cmd[1])
 	{
-		env_change_value("?", ft_strdup("1"), env_list);
-		return (error_ret_0("Error : too many arguments"));
+		write(2, "Error : too many arguments\n", 27);
+		return (1);
 	}
 	print_list_visible_only(env_list);
 	return (0);
 }
 
-int	set_variable(char *command, t_env **list)
+int	set_variable(char *cmd, t_env **list)
 {
 	int		i;
 	char	*name;
 	char	*value;
 
 	i = 0;
-	while (command[i] != '=' || is_escaped(command, i))
+	while (cmd[i] != '=' || is_escaped(cmd, i))
+	{
+		if (ft_isdigit(cmd[0]) || (!ft_isalnum(cmd[i]) && cmd[i] != '_'))
+			return (0);
 		i++;
-	command[i++] = '\0';
-	value = ft_strdup(command + i);
-	name = ft_strdup(command);
+	}
+	cmd[i++] = '\0';
+	value = ft_strdup(cmd + i);
+	name = ft_strdup(cmd);
 	if (!name || !value)
 	{
 		free(name);
@@ -85,5 +104,5 @@ int	set_variable(char *command, t_env **list)
 		free(name);
 	else
 		*list = env_add_link(name, value, false, *list);
-	return (0);
+	return (1);
 }

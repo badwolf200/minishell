@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 17:00:33 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/06/14 18:05:50 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/24 16:15:35 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,9 @@ void	dup_in_close_new(int *new)
 
 int	fork_execute(char **command, t_env **env_list, int status, int *fd_tab)
 {
-	int	pid;
-	int	new[2];
+	int		pid;
+	int		new[2];
+	char	*tmp;
 
 	if ((status) && pipe(new) < 0)
 		return (free_split_ret_error(command));
@@ -54,35 +55,9 @@ int	fork_execute(char **command, t_env **env_list, int status, int *fd_tab)
 	wait(&pid);
 	if (status)
 		dup_in_close_new(new);
-	env_change_value("?", ft_itoa(WEXITSTATUS(pid)), *env_list);
-	return (WEXITSTATUS(pid));
-}
-
-int	var_then_fork(char **line, t_env **env_list, int status, int *fd_tab)
-{
-	int	i;
-	int	ret;
-
-	i = 0;
-	ret = 0;
-	while (line[i] && line[i][0] != '='
-		&& unescaped_strchr(line[i], '='))
-	{
-		if (set_variable(line[i], env_list) == -1)
-			return (free_split_ret_error(line));
-		i++;
-	}
-	line = remove_escape_from_split(line, '=', '\\');
-	if (!line)
+	tmp = ft_itoa(WEXITSTATUS(pid));
+	if (!tmp)
 		return (-1);
-	if (line[i] && !status && !ft_strcmp(line[i], "cd"))
-		ret = proceed_cmd(line + i, env_list, fd_tab);
-	else if (line[i])
-	{
-		if (status == 2)
-			status -= 2;
-		ret = fork_execute(line + i, env_list, status, fd_tab);
-	}
-	free_split(line);
-	return (ret);
+	env_change_value("?", tmp, *env_list);
+	return (WEXITSTATUS(pid));
 }

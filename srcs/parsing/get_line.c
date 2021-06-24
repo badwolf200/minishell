@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/19 17:42:28 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/06/23 17:10:52 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/23 20:13:14 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,9 @@ char	*read_loop(t_curs_pos curs, char *line, t_history **hist, int *buffer)
 			line = add_char(line, *buffer, &curs);
 		(*hist)->line = line;
 	}
-	if (!ft_strcmp(line, "exit"))
-		return (ft_strdup("exit"));
+	if ((!ft_strncmp(line, "exit", 4) && ft_strlen(line) == 4)
+		|| !ft_strncmp(line, "exit ", 5))
+		return (ft_strdup(line));
 	return (line);
 }
 

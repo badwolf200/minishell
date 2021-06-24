@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 14:24:11 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/06/14 15:23:52 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/23 20:19:44 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,8 @@ char	**fill_split_semicolons(char *line, char **strs)
 	j = 0;
 	while (previous < (int)ft_strlen(line))
 	{
-		while ((line[i] && (line[i] != ';'
-					|| is_inside_quotes(line, i) || is_escaped(line, i))))
+		while (line[i] && (line[i] != ';'
+				|| is_inside_quotes(line, i) || is_escaped(line, i)))
 			i++;
 		strs[j] = ft_strndup(line + previous, i - previous);
 		if (!strs[j])
@@ -89,26 +89,19 @@ char	**fill_split_semicolons(char *line, char **strs)
 
 char	**split_semicolons(char *line)
 {
-	int		i;
+	int		nb_semicolons;
 	char	**strs;
 
 	if (check_double_semicolon(line))
 		return (NULL);
-	strs = malloc(sizeof(char *) * (get_nb_semicolons(line) + 2));
+	nb_semicolons = get_nb_semicolons(line);
+	strs = malloc(sizeof(char *) * (nb_semicolons + 2));
 	if (!strs)
 		return (NULL);
 	strs = fill_split_semicolons(line, strs);
 	if (!strs)
 		return (NULL);
-	i = 0;
-	while (strs[i])
-	{
-		if (is_str_empty(strs[i]))
-		{
-			free_split(strs);
-			return (NULL);
-		}
-		i++;
-	}
+	if (check_empty_semicolons_str(strs, nb_semicolons))
+		return (NULL);
 	return (remove_escape_from_split(strs, ';', ';'));
 }

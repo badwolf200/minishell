@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/23 11:38:25 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/06/23 17:07:22 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/24 16:06:41 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,8 @@ typedef struct s_env
 int			g_sigint;
 
 char		*env_get_value(char *name, t_env *list);
-void		set_visible(char *name, t_env *list);
-void		set_invisible(char *name, t_env *list);
+int			set_visible(char *name, t_env *list);
+int			set_invisible(char *name, t_env *list);
 void		print_list_visible_only(t_env *list);
 void		env_print_list(t_env *list);
 t_env		*env_add_link(char *name, char *value, bool visible, t_env *next);
@@ -92,7 +92,7 @@ int			cmd_cd(char **cmd, t_env *list);
 int			cmd_echo(char **cmd);
 int			cmd_pwd(char **cmd, t_env *list);
 int			cmd_env(char **cmd, t_env *environ);
-int			cmd_export(char **cmd, t_env *list);
+int			cmd_export(char **cmd, t_env **list);
 int			cmd_unset(char **cmd, t_env **list);
 int			pars_line(char *line, t_env **env_list);
 char		**split_semicolons(char *line);
@@ -136,7 +136,7 @@ char		*dup_name(char *str, int *i);
 int			goto_start_of_name(char *str, int i);
 void		free_close_fd_tab(int **fd_tab);
 int			free_ret_error(char *line, char *error, int	ret);
-int			var_then_fork(char **command, t_env **env, int status, int *fd);
+int			var_then_execute(char **command, t_env **env, int status, int *fd);
 int			print_nice_path(void);
 int			is_escaped(char *str, int i);
 char		*remove_escape_chars(char *str, char c1, char c2);
@@ -146,5 +146,7 @@ char		*unescaped_strchr(char *str, char c);
 int			check_escapes(char *str);
 int			check_fd_tab(int *fd);
 char		*key_up_down(char *line, int buff, t_curs_pos *c, t_history **l);
+int			check_empty_semicolons_str(char **strs, int nb);
+int			is_a_builtin(char *str);
 
 #endif

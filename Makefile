@@ -6,7 +6,7 @@
 #    By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/02 14:55:32 by rkowalsk          #+#    #+#              #
-#    Updated: 2021/06/23 17:06:08 by rkowalsk         ###   ########lyon.fr    #
+#    Updated: 2021/06/24 16:48:28 by rkowalsk         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,9 +28,11 @@ SRCS = \
 	srcs/commands/env_list_to_tab.c \
 	srcs/parsing/line_parsing.c \
 	srcs/parsing/pars_semicolons.c \
+	srcs/parsing/pars_semicolons_2.c \
 	srcs/parsing/pars_spaces.c \
 	srcs/parsing/pars_pipes.c \
 	srcs/parsing/fork.c \
+	srcs/parsing/setvar_then_fork.c \
 	srcs/parsing/variables.c \
 	srcs/parsing/redirections.c \
 	srcs/parsing/redirections_add_escapes.c \
@@ -62,7 +64,7 @@ $(NAME): $(OBJS) $(LIBFT)
 	clang -o $(NAME) $(OBJS) $(LIBFT) -ltermcap
 
 $(OBJS): %.o: %.c $(INCLUDES)
-	clang -Wall -Wextra -Werror -Iincludes -c $< -o $@
+	clang -Wall -Wextra -Werror -g3 -Iincludes -c $< -o $@
 
 clean:
 	rm -f $(OBJS)

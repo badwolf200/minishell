@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 17:50:41 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/06/14 18:58:55 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/24 16:16:13 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,13 @@
 
 int	cmd_searching(char **cmd, t_env **env_list)
 {
-	int	ret;
+	int		ret;
+	char	*tmp;
 
 	if (!ft_strcmp(cmd[0], "env"))
 		ret = cmd_env(cmd, *env_list);
 	else if (!ft_strcmp(cmd[0], "export"))
-		ret = cmd_export(cmd, *env_list);
+		ret = cmd_export(cmd, env_list);
 	else if (!ft_strcmp(cmd[0], "unset"))
 		ret = cmd_unset(cmd, env_list);
 	else if (!ft_strcmp(cmd[0], "cd"))
@@ -30,6 +31,10 @@ int	cmd_searching(char **cmd, t_env **env_list)
 		ret = cmd_echo(cmd);
 	else
 		ret = cmd_execve(cmd, *env_list);
+	tmp = ft_itoa(ret);
+	if (!tmp)
+		return (-1);
+	env_change_value("?", tmp, *env_list);
 	return (ret);
 }
 

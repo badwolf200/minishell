@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 17:49:48 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/06/09 17:20:09 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/24 16:16:47 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,13 @@ int	split_len(char **str)
 	while (str[i])
 		i++;
 	return (i);
+}
+
+int	is_a_builtin(char *str)
+{
+	if (!ft_strcmp(str, "cd") || !ft_strcmp(str, "env")
+		|| !ft_strcmp(str, "export") || !ft_strcmp(str, "unset")
+		|| !ft_strcmp(str, "pwd") || !ft_strcmp(str, "echo"))
+		return (1);
+	return (0);
 }

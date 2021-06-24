@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 14:49:21 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/06/14 18:36:45 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/23 21:06:41 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,9 @@ int	get_var_end(char *var_start)
 	int	i;
 
 	i = 1;
-	while (var_start[i] && (ft_isalnum(var_start[i]) || var_start[i] == '_'
-			|| var_start[i] == '?'))
+	if (var_start[i] == '?')
+		return (2);
+	while (var_start[i] && (ft_isalnum(var_start[i]) || var_start[i] == '_'))
 		i++;
 	return (i);
 }

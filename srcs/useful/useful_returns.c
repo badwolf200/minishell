@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/29 14:40:53 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/06/23 16:51:15 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/23 20:20:58 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,23 @@ int	error_ret(char *str, t_env *env, struct termios saved, t_history *histo)
 
 int	success_ret(char *str, t_env *env, struct termios saved, t_history *histo)
 {
-	if (!str || !ft_strcmp(str, "exit"))
-		ft_printf("KTHXBYE\n");
-	else
-		ft_printf("\nKTHXBYE\n");
+	int	r;
+	int	x;
+
+	x = 5;
+	r = 0;
+	while (str[x] && ft_strlen(str) > 5)
+	{
+		if (ft_isdigit(str[x]) == 0)
+		{
+			ft_putstr_fd("Bad arg with exit\n", 2);
+			r = 255;
+		}
+		x++;
+	}
+	if (r != 255)
+		r = (unsigned char)ft_atoi(str + 4);
+	write(1, "exit\n", 5);
 	reset_input_mode(saved);
 	free(str);
 	if (env)
@@ -48,7 +61,7 @@ int	success_ret(char *str, t_env *env, struct termios saved, t_history *histo)
 	if (histo)
 		history_free_list(histo);
 	signal(SIGINT, SIG_DFL);
-	return (EXIT_SUCCESS);
+	return (r);
 }
 
 int	free_ret_error(char *line, char *error, int	ret)

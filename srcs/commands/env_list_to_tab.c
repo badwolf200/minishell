@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/14 16:55:10 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/06/01 19:06:59 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/24 15:55:17 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ int	get_list_size(t_env *list)
 	i = 0;
 	while (list)
 	{
-		i++;
+		if (list->value)
+			i++;
 		list = list->next;
 	}
 	return (i);
@@ -51,14 +52,17 @@ char	**create_env_tab(t_env *list)
 	i = 0;
 	while (list)
 	{
-		tab[i] = list_to_var(list);
-		if (!tab[i])
+		if (list->value)
 		{
-			free_split(tab);
-			return (NULL);
+			tab[i] = list_to_var(list);
+			if (!tab[i])
+			{
+				free_split(tab);
+				return (NULL);
+			}
+			i++;
 		}
 		list = list->next;
-		i++;
 	}
 	tab[i] = NULL;
 	return (tab);

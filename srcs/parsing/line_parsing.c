@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 14:33:54 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/06/14 18:33:20 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/24 16:06:54 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	pars_spaces(char **command, t_env **env_list, int **fd_tab)
 		line = split_spaces(command[i], *env_list);
 		if (!line)
 			return (reset_fds_ret_error(save, i));
-		status = var_then_fork(line, env_list, status, fd_tab[i]);
+		status = var_then_execute(line, env_list, status, fd_tab[i]);
 		if (status < 0)
 			return (reset_fds_ret_error(save, i));
 		i++;
