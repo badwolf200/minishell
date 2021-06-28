@@ -6,7 +6,7 @@
 /*   By: rkowalsk <rkowalsk@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 17:50:04 by rkowalsk          #+#    #+#             */
-/*   Updated: 2021/06/24 14:12:58 by rkowalsk         ###   ########lyon.fr   */
+/*   Updated: 2021/06/28 20:36:35 by rkowalsk         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	print_nice_path(void)
 	}
 	if (g_sigint)
 		g_sigint--;
-	return (0);
+	return (ret);
 }
 
 void	sigint_case(int truc)
